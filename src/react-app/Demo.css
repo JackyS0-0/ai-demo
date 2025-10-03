@@ -1,0 +1,684 @@
+.demo-container {
+  width: 100%;
+  /* max-width: 1400px; */
+  margin: 0 auto;
+  /* min-height: 100vh; */
+  background: #ffffff;
+  /* padding: 24px; */
+}
+
+.demo-header {
+  text-align: center;
+  /* margin-bottom: 32px; */
+}
+
+.demo-header .ant-typography {
+  color: #1a1a1a;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+}
+
+.demo-header .ant-typography-secondary {
+  color: #666;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+/* 主要内容区域 */
+.demo-content {
+  min-height: 550px;
+}
+
+/* 通用卡片样式 */
+.upload-card,
+.prompt-card,
+.result-card {
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.upload-card:hover,
+.prompt-card:hover,
+.result-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.upload-card .ant-card-head,
+.prompt-card .ant-card-head,
+.result-card .ant-card-head {
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+  /* padding: 20px 24px; */
+}
+
+.upload-card .ant-card-head-title,
+.prompt-card .ant-card-head-title,
+.result-card .ant-card-head-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.upload-card .ant-card-body,
+.prompt-card .ant-card-body,
+.result-card .ant-card-body {
+  /* padding: 24px; */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 上传卡片样式 */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.upload-section .ant-upload {
+  width: 100%;
+}
+
+.upload-section .ant-upload.ant-upload-select-picture-card {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 2px dashed #e0e0e0;
+  background: #fafafa;
+  transition: all 0.3s ease;
+}
+
+.upload-section .ant-upload.ant-upload-select-picture-card:hover {
+  border-color: #1677ff;
+  background: #f6ffed;
+  transform: translateY(-1px);
+}
+
+.upload-section .ant-btn {
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 400;
+  border: 2px dashed #e0e0e0;
+  background: #fafafa;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.upload-section .ant-btn:hover {
+  border-color: #1677ff;
+  background: #f6ffed;
+  color: #1677ff;
+  transform: translateY(-1px);
+}
+
+/* Picture list type styles */
+.upload-section .ant-upload-list-picture .ant-upload-list-item {
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  margin-top: 16px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.upload-section .ant-upload-list-picture .ant-upload-list-item:hover {
+  border-color: #1677ff;
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.1);
+}
+
+.upload-section .ant-upload-list-picture .ant-upload-list-item-thumbnail img {
+  border-radius: 8px;
+}
+
+.upload-section .ant-upload-list-picture .ant-upload-list-item-name {
+  color: #1a1a1a;
+  font-weight: 400;
+}
+
+.upload-section .ant-upload-list-picture .ant-upload-list-item-actions .ant-btn {
+  border: none;
+  background: transparent;
+  color: #666;
+  height: auto;
+}
+
+.upload-section .ant-upload-list-picture .ant-upload-list-item-actions .ant-btn:hover {
+  background: transparent;
+  color: #1677ff;
+  transform: none;
+}
+
+
+/* 自定义图片预览样式 */
+.custom-image-preview {
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.custom-image-preview:hover {
+  border-color: #1677ff;
+  box-shadow: 0 4px 12px rgba(22, 119, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.preview-image-container {
+  padding: 16px;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  object-fit: contain;
+}
+
+.preview-info {
+  padding: 16px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.remove-button {
+  font-size: 12px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 6px;
+}
+
+.remove-button:hover {
+  background: #fff2f0;
+  border-color: #ff4d4f;
+  color: #ff4d4f;
+}
+
+/* 提示词卡片样式 */
+.prompt-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+/* 快捷按钮区域 */
+.quick-buttons-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.quick-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.quick-button {
+  height: 32px;
+  border-radius: 8px;
+  font-size: 12px;
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  color: #666;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-button:hover {
+  border-color: #1677ff;
+  color: #1677ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(22, 119, 255, 0.1);
+}
+
+.quick-button:active {
+  transform: translateY(0);
+}
+
+.prompt-input {
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.prompt-input:focus,
+.prompt-input-focused {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+}
+
+.prompt-input .ant-input {
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  height: 100% !important;
+  color: #1a1a1a;
+}
+
+.generate-button {
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 400;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #1677ff;
+  border-color: #1677ff;
+}
+
+.generate-button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 119, 255, 0.3);
+  background: #4096ff;
+  border-color: #4096ff;
+}
+
+/* 结果卡片样式 */
+.result-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 300px;
+}
+
+.result-image {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.download-button {
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 400;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #52c41a;
+  border-color: #52c41a;
+}
+
+.download-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3);
+  background: #73d13d;
+  border-color: #73d13d;
+}
+
+/* 空状态 */
+.empty-result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  color: #e8e8e8;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.5;
+}
+
+/* 错误提示 */
+.error-alert {
+  border-radius: 12px;
+  border: none;
+  margin-top: 24px;
+  box-shadow: 0 2px 8px rgba(245, 34, 45, 0.08);
+}
+
+.error-alert .ant-alert-message {
+  font-weight: 500;
+}
+
+/* 暗色主题适配 */
+@media (prefers-color-scheme: dark) {
+  .demo-container {
+    background: #141414;
+  }
+  
+  .demo-header .ant-typography {
+    color: #ffffff;
+  }
+  
+  .demo-header .ant-typography-secondary {
+    color: #bfbfbf;
+  }
+  
+  .upload-card,
+  .prompt-card,
+  .result-card {
+    background: #1f1f1f;
+    border-color: #303030;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .upload-card .ant-card-head,
+  .prompt-card .ant-card-head,
+  .result-card .ant-card-head {
+    background: #1f1f1f;
+    border-color: #303030;
+  }
+  
+  .upload-card .ant-card-head-title,
+  .prompt-card .ant-card-head-title,
+  .result-card .ant-card-head-title {
+    color: #ffffff;
+  }
+  
+  .upload-section .ant-btn {
+    background: #262626;
+    border-color: #434343;
+    color: #bfbfbf;
+  }
+  
+  .upload-section .ant-btn:hover {
+    background: #1f1f1f;
+    border-color: #1677ff;
+    color: #1677ff;
+  }
+  
+  
+  .quick-buttons-title {
+    color: #bfbfbf;
+  }
+
+  .quick-button {
+    background: #262626;
+    border-color: #434343;
+    color: #bfbfbf;
+  }
+
+  .quick-button:hover {
+    border-color: #1677ff;
+    color: #1677ff;
+    background: #1f1f1f;
+  }
+
+  .prompt-input {
+    background: #262626;
+    border-color: #434343;
+    color: #ffffff;
+  }
+  
+  .prompt-input .ant-input {
+    background: #262626;
+    color: #ffffff;
+  }
+  
+  .image-container {
+    background: #262626;
+  }
+  
+  .empty-title {
+    color: #bfbfbf;
+  }
+  
+  .empty-subtitle {
+    color: #8c8c8c;
+  }
+
+  /* 暗色主题下的自定义图片预览 */
+  .custom-image-preview {
+    background: #1f1f1f;
+    border-color: #303030;
+  }
+
+  .preview-image-container {
+    background: #262626;
+  }
+
+  .preview-info {
+    border-color: #303030;
+  }
+
+  .file-name {
+    color: #ffffff;
+  }
+
+  .file-size {
+    color: #8c8c8c;
+  }
+
+  .remove-button:hover {
+    background: #2a1215;
+    border-color: #a61d24;
+    color: #a61d24;
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .demo-container {
+    padding: 16px;
+  }
+  
+  
+  .upload-section,
+  .prompt-section,
+  .result-section {
+    gap: 16px;
+  }
+  
+  .image-container {
+    min-height: 250px;
+    padding: 16px;
+  }
+  
+  .result-image {
+    max-height: 300px;
+  }
+  
+  .empty-icon {
+    font-size: 48px;
+  }
+
+  /* 移动端自定义图片预览优化 */
+  .custom-image-preview {
+    margin-top: 12px;
+  }
+
+  .preview-image-container {
+    min-height: 150px;
+    padding: 12px;
+  }
+
+  .preview-image {
+    max-height: 250px;
+  }
+
+  .preview-info {
+    padding: 12px;
+  }
+  
+}
+
+@media (max-width: 576px) {
+  .demo-container {
+    padding: 12px;
+  }
+  
+  .demo-header .ant-typography {
+    font-size: 24px;
+  }
+  
+  .upload-section .ant-btn,
+  .generate-button,
+  .download-button {
+    height: 44px;
+    font-size: 14px;
+  }
+  
+  .quick-buttons-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  
+  .quick-button {
+    height: 28px;
+    font-size: 11px;
+  }
+  
+  .image-container {
+    min-height: 200px;
+  }
+  
+  .empty-icon {
+    font-size: 36px;
+  }
+  
+  .empty-title {
+    font-size: 14px;
+  }
+  
+  .empty-subtitle {
+    font-size: 12px;
+  }
+
+  /* 小屏幕自定义图片预览优化 */
+  .custom-image-preview {
+    margin-top: 8px;
+  }
+
+  .preview-image-container {
+    min-height: 120px;
+    padding: 8px;
+  }
+
+  .preview-image {
+    max-height: 200px;
+  }
+
+  .preview-info {
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .file-name {
+    font-size: 13px;
+  }
+
+  .file-size {
+    font-size: 11px;
+  }
+
+  .remove-button {
+    align-self: flex-end;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.upload-card,
+.prompt-card,
+.result-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.loading-spinner {
+  font-size: 32px;
+  color: #1890ff;
+}
+
+/* 确保卡片等高 */
+.demo-content .ant-col {
+  display: flex;
+}
+
+.demo-content .ant-col > .ant-card {
+  width: 100%;
+}

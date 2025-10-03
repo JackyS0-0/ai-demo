@@ -11,5 +11,8 @@
   "assets": {
     "directory": "./dist/client",
     "not_found_handling": "single-page-application"
+  },
+  "vars": {
+    "API_KEY": "072ff3da-64fe-45e4-8095-39cf1ce5be51"
   }
 }
