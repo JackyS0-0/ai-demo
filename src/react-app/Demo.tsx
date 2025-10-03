@@ -13,7 +13,7 @@ import {
   message,
   UploadProps,
 } from 'antd';
-import { UploadOutlined, DownloadOutlined, LoadingOutlined, PictureOutlined, FileImageOutlined } from '@ant-design/icons';
+import { UploadOutlined, DownloadOutlined, LoadingOutlined, PictureOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd';
 import './Demo.css';
 
