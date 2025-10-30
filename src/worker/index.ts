@@ -1,3 +1,4 @@
+import { Content } from "antd/es/layout/layout";
 import { Hono } from "hono";
 
 export interface Env {
@@ -32,10 +33,12 @@ app.post("/api/generate-image", async (c) => {
       return c.json({ error: "缺少必要的参数: prompt 和 image" }, 400);
     }
 
-    // 构建请求数据
+    const refinedPrompt = `你是一个穿搭专家，用户提供了一张全身照片，并提供了以下文字描述信息：\n${prompt}\n，请根据这些信息，发挥你的想象力，先确定人物穿搭的详细方案，再直接修改图片中的穿搭`
+   
+    // 构建图像生成请求数据（使用润色后的提示词）
     const requestData = {
       model: 'doubao-seedream-4-0-250828',
-      prompt: prompt.trim(),
+      prompt: refinedPrompt,
       image: image,
       size: size,
       sequential_image_generation: 'disabled',
@@ -44,7 +47,7 @@ app.post("/api/generate-image", async (c) => {
       watermark: true
     };
 
-    // 调用ARK API
+    // 调用ARK 图像生成 API
     const response = await fetch('https://ark.cn-beijing.volces.com/api/v3/images/generations', {
       method: 'POST',
       headers: {
@@ -74,6 +77,19 @@ app.post("/api/generate-image", async (c) => {
     return c.json({
       error: error instanceof Error ? error.message : '生成图片时发生未知错误'
     }, 500);
+  }
+});
+
+// 简易登录接口（演示用）
+app.post("/api/login", async (c) => {
+  try {
+    const { username, password } = await c.req.json<{ username: string; password: string }>().catch(() => ({ username: "", password: "" }));
+    if (username === "admin" && password === "123456") {
+      return c.json({ token: "demo-token-" + Date.now() });
+    }
+    return c.json({ error: "用户名或密码错误" }, 401);
+  } catch (e) {
+    return c.json({ error: e instanceof Error ? e.message : "登录失败" }, 500);
   }
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Card,
   Input,
@@ -12,8 +12,9 @@ import {
   Col,
   message,
   UploadProps,
+  Tag,
 } from 'antd';
-import { UploadOutlined, DownloadOutlined, LoadingOutlined, PictureOutlined } from '@ant-design/icons';
+import { UploadOutlined, DownloadOutlined, DeleteOutlined,LoadingOutlined, PictureOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd';
 import './Demo.css';
 
@@ -21,28 +22,62 @@ const { Title } = Typography;
 const { TextArea } = Input;
 
 const Demo: React.FC = () => {
-  const [prompt, setPrompt] = useState<string>('');
+  const [customPrompt, setCustomPrompt] = useState<string>('');
   const [uploadedFile, setUploadedFile] = useState<UploadFile | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 预设提示词
-  const presetPrompts = [
-    {
-      label: '人物手办',
-      prompt: '使用提供的图片制作一个1/7比例的商用角色立绘，采用写实风格和环境。将角色放置在电脑桌上，使用一个无文字的圆形透明亚克力底座。在电脑屏幕上，显示该角色的ZBrush建模过程。在电脑屏幕旁边，放置一个印有原画的BANDAI风格玩具包装盒。'
-    },
-    {
-      label: '法天象地',
-      prompt: '把人物改为巨大化虚影，画面中间添加原图人物，用极低角度的仰视视角拍摄，形成法天象地的电影画面感，保持画面中的服装，发型，道具等一致性，自动选择合适的背景保持画面的冲击力。'
-    },
-  ];
+  // 编辑模式：标签选择 vs 文本编辑
+  const [editMode, setEditMode] = useState<boolean>(false);
 
-  // 应用预设提示词
-  const applyPresetPrompt = (presetPrompt: string) => {
-    setPrompt(presetPrompt);
+  // 穿搭风格分类标签
+  const styleCategories: Record<string, string[]> = {
+    '整体风格': ['休闲', '文艺', '甜美', '复古', '运动', '学院', '居家', '商务','民族', '古风'],
+    '场景': ['通勤', '约会', '派对', '旅行', '校园'],
+    '季节': ['春季', '夏季', '秋季', '冬季'],
   };
+
+  // 已选标签（按分类）
+  const [selectedByCat, setSelectedByCat] = useState<Record<string, Set<string>>>(() => {
+    const init: Record<string, Set<string>> = {};
+    Object.keys(styleCategories).forEach((k) => (init[k] = new Set()));
+    return init;
+  });
+
+  const composePrompt = (data: Record<string, Set<string>>) => {
+    const parts: string[] = [];
+    Object.entries(data).forEach(([cat, set]) => {
+      if (set.size) parts.push(`${cat}: ${Array.from(set).join('、')}`);
+    });
+    return `${parts.length ? ' ' + parts.join('；') : ''}`;
+  };
+
+  const tagsPrompt = useMemo(() => composePrompt(selectedByCat), [selectedByCat]);
+
+  const toggleTag = (cat: string, tag: string) => {
+    setSelectedByCat((prev) => {
+      const next: Record<string, Set<string>> = { ...prev };
+      const set = new Set(next[cat]);
+      // 单选逻辑：同一分类下仅保留一个标签；再次点击同一标签则清空该分类选择
+      if (set.has(tag)) {
+        next[cat] = new Set();
+      } else {
+        next[cat] = new Set([tag]);
+      }
+      return next;
+    });
+  };
+
+  const clearSelections = () => {
+    const cleared: Record<string, Set<string>> = {};
+    Object.keys(styleCategories).forEach((k) => (cleared[k] = new Set()));
+    setSelectedByCat(cleared);
+  };
+
+  const hasSelections = useMemo(() => {
+    return Object.values(selectedByCat).some((set) => set.size > 0);
+  }, [selectedByCat]);
 
   // API端点URL
   const apiBaseUrl = '/api';
@@ -146,8 +181,10 @@ const Demo: React.FC = () => {
       return;
     }
 
-    if (!prompt.trim()) {
-      setError('请输入提示词');
+    const promptToSend = editMode ? customPrompt.trim() : tagsPrompt.trim();
+
+    if (!promptToSend) {
+      setError(editMode ? '请输入自定义提示词' : '请至少选择一个标签');
       return;
     }
 
@@ -165,7 +202,7 @@ const Demo: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt: prompt.trim(),
+          prompt: promptToSend,
           image: base64Image,
           size: '2K'
         })
@@ -206,9 +243,9 @@ const Demo: React.FC = () => {
 
   return (
     <div className="demo-container">
-      <div className="demo-header">
-        <Title level={2}>AI 图片编辑</Title>
-      </div>
+      {/* <div className="demo-header">
+        <Title level={2}>穿搭风格生成器</Title>
+      </div> */}
 
 
       <Row gutter={[24, 24]} className="demo-content">
@@ -218,26 +255,33 @@ const Demo: React.FC = () => {
             title={
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {/* <FileImageOutlined /> */}
-                <span>上传一张参考图片</span>
+                <span>参考图</span>
               </div>
             }
             extra={
-              <Upload
-                name="image"
-                multiple={false}
-                maxCount={1}
-                beforeUpload={beforeUpload}
-                onChange={handleUpload}
-                customRequest={customUpload}
-                accept=".jpg,.jpeg,.png"
-                fileList={uploadedFile ? [uploadedFile] : []}
-                showUploadList={false}
-                onRemove={() => setUploadedFile(null)}
-              >
-                <Button type="primary" icon={<UploadOutlined />} size="small">
-                  选择图片
-                </Button>
-              </Upload>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Upload
+                  name="image"
+                  multiple={false}
+                  maxCount={1}
+                  beforeUpload={beforeUpload}
+                  onChange={handleUpload}
+                  customRequest={customUpload}
+                  accept=".jpg,.jpeg,.png"
+                  fileList={uploadedFile ? [uploadedFile] : []}
+                  showUploadList={false}
+                  onRemove={() => setUploadedFile(null)}
+                >
+                  <Button type="primary" icon={<UploadOutlined />} size="small">
+                    选择图片
+                  </Button>
+                </Upload>
+                {uploadedFile && (
+                  <Button danger size="small" icon={<DeleteOutlined />} onClick={() => setUploadedFile(null)}>
+                    清空图片
+                  </Button>
+                )}
+              </div>
             }
             className="upload-card"
           >
@@ -245,32 +289,17 @@ const Demo: React.FC = () => {
               
               {/* 自定义图片预览 */}
               {uploadedFile ? (
-                <div className="custom-image-preview">
-                  <div className="preview-image-container">
-                    <Image
-                      src={URL.createObjectURL(uploadedFile.originFileObj as File)}
-                      alt="上传的图片"
-                      className="preview-image"
-                      placeholder={
-                        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-                      }
-                    />
-                  </div>
-                  <div className="preview-info">
-                    <div className="file-name">{uploadedFile.name}</div>
-                    <div className="file-size">
-                      {(uploadedFile.size! / 1024 / 1024).toFixed(2)} MB
-                    </div>
-                    <Button
-                      type="text"
-                      danger
-                      size="small"
-                      onClick={() => setUploadedFile(null)}
-                      className="remove-button"
-                    >
-                      移除
-                    </Button>
-                  </div>
+                <div className="image-container">
+                  <Image
+                    src={URL.createObjectURL(uploadedFile.originFileObj as File)}
+                    alt="上传的图片"
+                    className="result-image"
+                    width={400}
+                    height={400}
+                    placeholder={
+                      <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+                    }
+                  />
                 </div>
               ) : (
                 <div className="empty-result">
@@ -291,39 +320,64 @@ const Demo: React.FC = () => {
 
         {/* 中间：输入提示词 */}
         <Col xs={24} md={8}>
-          <Card title="输入提示词" className="prompt-card">
-            <div className="prompt-section">
-              {/* 快捷按钮区域 */}
-              <div>
-                <div className="quick-buttons-title">快捷提示词</div>
-                <div className="quick-buttons-grid">
-                  {presetPrompts.map((preset, index) => (
-                    <Button
-                      key={index}
-                      size="small"
-                      className="quick-button"
-                      onClick={() => applyPresetPrompt(preset.prompt)}
-                    >
-                      {preset.label}
-                    </Button>
-                  ))}
-                </div>
+          <Card 
+            title="风格设计区" 
+            className="prompt-card"
+            extra={
+              <div style={{ display: 'flex', gap: 8 }}>
+                <Button size="small"  onClick={() => setEditMode((v) => !v)}>
+                  {editMode ? '切换标签模式' : '切换自定义模式'}
+                </Button>
+                {!editMode && hasSelections && (
+                  <Button size="small" danger icon={<DeleteOutlined />} onClick={clearSelections}>清空标签</Button>
+                )}
               </div>
+            }
+          >
+            <div className="prompt-section">
+              {editMode ? (
+                <>
+                  <TextArea
+                    placeholder="自由编辑提示词"
+                    value={customPrompt}
+                    onChange={(e) => setCustomPrompt(e.target.value)}
+                    rows={8}
+                    maxLength={1000}
+                    showCount
+                    className="prompt-input"
+                  />
+                </>
+              ) : (
+                <>
+                  {Object.entries(styleCategories).map(([cat, tags]) => (
+                    <div key={cat} style={{ marginBottom: 12 }}>
+                      <div style={{ fontWeight: 600, marginBottom: 8 }}>{cat}</div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                        {tags.map((t) => {
+                          const selected = selectedByCat[cat]?.has(t);
+                          return (
+                            <Tag
+                              key={t}
+                              color={selected ? 'blue' : undefined}
+                              onClick={() => toggleTag(cat, t)}
+                              style={{ cursor: 'pointer', padding: '6px 10px', borderRadius: 6 }}
+                            >
+                              {t}
+                            </Tag>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                  {/* <Divider style={{ margin: '12px 0' }} />
+                  <div style={{ fontSize: 12, color: '#888' }}>自动根据所选标签生成提示词，亦可切换到自定义编辑。</div> */}
+                </>
+              )}
 
-              <TextArea
-                placeholder="请详细描述您希望编辑内容"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                rows={8}
-                maxLength={1000}
-                showCount
-                className="prompt-input"
-              />
-              
               <Button
                 type="primary"
                 onClick={generateImage}
-                disabled={!uploadedFile || !prompt.trim()}
+                disabled={!uploadedFile || (editMode ? !customPrompt.trim() : !hasSelections)}
                 loading={loading}
                 size="large"
                 block
@@ -337,7 +391,17 @@ const Demo: React.FC = () => {
 
         {/* 右侧：生成结果 */}
         <Col xs={24} md={8}>
-          <Card title="生成结果" className="result-card">
+          <Card
+            title="生成结果"
+            className="result-card"
+            extra={
+              generatedImage ? (
+                <Button type="primary" icon={<DownloadOutlined />} size="small" onClick={downloadImage}>
+                  下载图片
+                </Button>
+              ) : null
+            }
+          >
             <div className="result-section">
               {generatedImage ? (
                 <div className="result-content">
@@ -346,21 +410,13 @@ const Demo: React.FC = () => {
                       src={generatedImage}
                       alt="生成的图片"
                       className="result-image"
+                      width={400}
+                      height={400}
                       placeholder={
                         <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
                       }
                     />
                   </div>
-                  <Button
-                    type="primary"
-                    icon={<DownloadOutlined />}
-                    onClick={downloadImage}
-                    size="large"
-                    block
-                    className="download-button"
-                  >
-                    下载图片
-                  </Button>
                 </div>
               ) : (
                 <div className="empty-result">
