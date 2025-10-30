@@ -6,7 +6,6 @@ import {
   Upload,
   Spin,
   Alert,
-  Typography,
   Image,
   Row,
   Col,
@@ -18,7 +17,6 @@ import { UploadOutlined, DownloadOutlined, DeleteOutlined,LoadingOutlined, Pictu
 import type { UploadFile } from 'antd';
 import './Demo.css';
 
-const { Title } = Typography;
 const { TextArea } = Input;
 
 const Demo: React.FC = () => {
@@ -246,8 +244,6 @@ const Demo: React.FC = () => {
       {/* <div className="demo-header">
         <Title level={2}>穿搭风格生成器</Title>
       </div> */}
-
-
       <Row gutter={[24, 24]} className="demo-content">
         {/* 左侧：上传图片 */}
         <Col xs={24} md={8}>

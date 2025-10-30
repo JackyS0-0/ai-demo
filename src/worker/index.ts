@@ -1,4 +1,3 @@
-import { Content } from "antd/es/layout/layout";
 import { Hono } from "hono";
 
 export interface Env {

@@ -25,17 +25,14 @@ const images = [
   {
     title: "时尚风",
     url: "/123.png",
-    // desc: "",
   },
   {
     title: "校园风",
     url: "456.jpeg",
-    // desc: "",
   },
   {
     title: "商务风",
     url: "789.jpeg",
-    // desc: "",
   },
 ];
 
@@ -134,7 +131,6 @@ const UserHome: React.FC = () => {
                           preview={false}
                         />
                       </div>
-                      <Text type="secondary">{img.desc}</Text>
                     </Card>
                   </Col>
                 ))}
