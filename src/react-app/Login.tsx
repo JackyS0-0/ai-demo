@@ -30,21 +30,26 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "grid", placeItems: "center", minHeight: "100vh", padding: 16 }}>
-      <Card style={{ width: 360 }}>
+    <div style={{ display: "grid", placeItems: "center", minHeight: "100vh", padding: 16, background: "#f7f7fb" }}>
+      <Card style={{ width: 380, borderRadius: 12 }}>
         <Title level={3} style={{ textAlign: "center", marginBottom: 24 }}>
           用户登录
         </Title>
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form layout="vertical" onFinish={onFinish} style={{ gap: 8 }}>
           <Form.Item label="用户名" name="username" rules={[{ required: true, message: "请输入用户名" }]}>
             <Input placeholder="请输入用户名" autoComplete="username" />
           </Form.Item>
           <Form.Item label="密码" name="password" rules={[{ required: true, message: "请输入密码" }]}>
             <Input.Password placeholder="请输入密码" autoComplete="current-password" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            登录
-          </Button>
+          <div style={{ display: "grid", gap: 8 }}>
+            <Button type="primary" htmlType="submit" block>
+              登录
+            </Button>
+            <Button block type="default">
+              注册
+            </Button>
+          </div>
         </Form>
       </Card>
     </div>
