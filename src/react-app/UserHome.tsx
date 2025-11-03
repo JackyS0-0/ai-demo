@@ -103,7 +103,8 @@ const UserHome: React.FC = () => {
                   <Button onClick={() => setDesignMode(false)}>返回</Button>
                 ) : (
                   <>
-                   <Button type="primary" onClick={() => setDesignMode(true)}>设计</Button>
+                  <Button type="primary" onClick={() => setDesignMode(true)}>设计</Button>
+                  <Button>衣柜</Button>
                   <Button>作品</Button>
                   <Button>广场</Button>
                   <Button>喜欢</Button>
