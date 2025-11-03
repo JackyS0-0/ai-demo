@@ -105,11 +105,11 @@ const UserHome: React.FC = () => {
                   <>
                   <Button type="primary" onClick={() => setDesignMode(true)}>设计</Button>
                   <Button>衣柜</Button>
-                  <Button>作品</Button>
+                  {/* <Button>作品</Button>
                   <Button>广场</Button>
                   <Button>喜欢</Button>
-                  <Button>分享</Button>
-                  <Button>设置</Button>
+                  <Button>分享</Button>*/}
+                  <Button>设置</Button> 
                   </>
                  )}
               </div>
