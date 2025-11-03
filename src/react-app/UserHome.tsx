@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Layout, Card, Image, Avatar, Typography, Tag, Button, Space, Row, Col, Divider } from "antd";
-import { UserOutlined, LogoutOutlined, MailOutlined, CrownOutlined, CalendarOutlined } from "@ant-design/icons";
+import {LogoutOutlined, MailOutlined, CrownOutlined, CalendarOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { clearToken } from "./auth";
 import Demo from "./Demo";
 
-const { Header, Sider, Content, Footer } = Layout;
+const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
 
 const mockUser = {
@@ -144,9 +144,6 @@ const UserHome: React.FC = () => {
               </Row>
             )}
           </Content>
-          {/* <Footer style={{ textAlign: "center", color: "#999" }}>
-            © {new Date().getFullYear()} 用户主页 · 由 Ant Design & Vite 提供支持
-          </Footer> */}
         </Layout>
       </Layout>
     </Layout>
