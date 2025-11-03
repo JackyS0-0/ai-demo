@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, Form, Input, Typography, message } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setToken } from "./auth";
+import "./Login.css";
 
 const { Title } = Typography;
 
@@ -30,29 +31,29 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "grid", placeItems: "center", minHeight: "100vh", padding: 16, background: "#f7f7fb" }}>
-      <Card style={{ width: 380, borderRadius: 12 }}>
-        <Title level={3} style={{ textAlign: "center", marginBottom: 24 }}>
+    <div className="login-container">
+      <Card className="login-card">
+        <Title level={3} className="login-title">
           用户登录
         </Title>
-        <Form layout="vertical" onFinish={onFinish} style={{ gap: 8 }}>
+        <Form layout="vertical" onFinish={onFinish} className="login-form">
           <Form.Item label="用户名" name="username" rules={[{ required: true, message: "请输入用户名" }]}>
             <Input placeholder="请输入用户名" autoComplete="username" />
-          </Form.Item>
-          <Form.Item label="密码" name="password" rules={[{ required: true, message: "请输入密码" }]}>
+        </Form.Item>
+        <Form.Item label="密码" name="password" rules={[{ required: true, message: "请输入密码" }]}>
             <Input.Password placeholder="请输入密码" autoComplete="current-password" />
-          </Form.Item>
-          <div style={{ display: "grid", gap: 8 }}>
-            <Button type="primary" htmlType="submit" block>
-              登录
-            </Button>
-            <Button block type="default">
-              注册
-            </Button>
-          </div>
-        </Form>
-      </Card>
-    </div>
+        </Form.Item>
+        <div className="login-buttons">
+          <Button type="primary" htmlType="submit" block className="login-button">
+            登录
+          </Button>
+          <Button block type="default" className="register-button">
+            注册
+          </Button>
+        </div>
+      </Form>
+    </Card>
+  </div>
   );
 };
 

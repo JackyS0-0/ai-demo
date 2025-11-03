@@ -49,8 +49,8 @@ const UserHome: React.FC = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff", borderBottom: "1px solid #f0f0f0" }}>
         <Space size={12} align="center">
-          <Avatar size={32} icon={<UserOutlined />} />
-          <Title level={4} style={{ margin: 0 }}>用户主页</Title>
+          {/* <Avatar size={32} icon={<UserOutlined />} /> */}
+          <Title level={4} style={{ margin: 0 }}>穿搭随心变</Title>
         </Space>
         <Space>
           {/* {getToken() && <Text type="secondary">已登录</Text>} */}
@@ -102,11 +102,18 @@ const UserHome: React.FC = () => {
                 {designMode ? (
                   <Button onClick={() => setDesignMode(false)}>返回</Button>
                 ) : (
-                  <Button type="primary" onClick={() => setDesignMode(true)}>设计</Button>
-                )}
+                  <>
+                   <Button type="primary" onClick={() => setDesignMode(true)}>设计</Button>
+                  <Button>作品</Button>
+                  <Button>广场</Button>
+                  <Button>喜欢</Button>
+                  <Button>分享</Button>
+                  <Button>设置</Button>
+                  </>
+                 )}
               </div>
             </Card>
-
+            <Title level={4}>今日穿搭推荐</Title>
             {designMode ? (
               <Card className="prompt-card" bodyStyle={{ padding: 12 }}>
                 <Demo />
@@ -137,9 +144,9 @@ const UserHome: React.FC = () => {
               </Row>
             )}
           </Content>
-          <Footer style={{ textAlign: "center", color: "#999" }}>
-            {/* © {new Date().getFullYear()} 用户主页 · 由 Ant Design & Vite 提供支持 */}
-          </Footer>
+          {/* <Footer style={{ textAlign: "center", color: "#999" }}>
+            © {new Date().getFullYear()} 用户主页 · 由 Ant Design & Vite 提供支持
+          </Footer> */}
         </Layout>
       </Layout>
     </Layout>
